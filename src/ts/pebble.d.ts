@@ -4,6 +4,11 @@ interface PebbleKitJS {
     callback: (e: PebbleEvents[T]) => void
   ): void;
 
+  removeEventListener<T extends keyof PebbleEvents>(
+    event: T,
+    callback: (e: PebbleEvents[T]) => void
+  ): void;
+
   sendAppMessage(
     message: Record<string, any>,
     successCallback: (e: any) => void,
@@ -18,12 +23,17 @@ interface PebbleKitJS {
   showSimpleNotificationOnPebble(title: string, body: string): void;
 }
 
-interface AppMessageEvent {
+type ReadyEvent = Event & {
+  type: "ready";
+};
+
+type AppMessageEvent = Event & {
+  type: "appmessage";
   payload: Record<string, any>;
-}
+};
 
 interface PebbleEvents {
-  ready: any;
+  ready: ReadyEvent;
   appmessage: AppMessageEvent;
 }
 
