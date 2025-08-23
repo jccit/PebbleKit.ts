@@ -5,13 +5,6 @@
  */
 export function sendAppMessage(message: Record<string, any>): Promise<void> {
   return new Promise((resolve, reject) => {
-    Pebble.sendAppMessage(
-      message,
-      () => resolve(),
-      (e) => {
-        console.log("Message failed: " + JSON.stringify(e));
-        reject(e);
-      }
-    );
+    Pebble.sendAppMessage(message, resolve, reject);
   });
 }
