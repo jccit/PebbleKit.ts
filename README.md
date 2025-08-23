@@ -6,6 +6,8 @@ When building [PebbleRail](https://github.com/jccit/pebblerail), I wanted to be 
 
 This project adds a JS build step similar to what you would find in a modern web project, but with a focus on targeting the PebbleKit JS engine. Meaning you can use modern JS/TS features without worrying about compatability.
 
+Also provided are modern wrappers around PKJS functions, available under the PebbleTS namespace.
+
 ## How to use
 
 ### New project
@@ -23,7 +25,7 @@ If you run into any issues I'd recommended following the "New Project" instructi
 
 1. Copy `babel.config.json`, `rollup.config.mjs`, `tsconfig.json`, `wscript` into your app, overwrite any existing files
 2. Copy the `scripts`, `dependencies` and `devDependencies` from `package.json` into your project's `package.json`
-3. Copy the `src/ts` folder to your project
+3. Copy the `src/ts` and `src/tslib` folders to your project
 4. Update `src/ts/index.ts` with your app's code. This is just the entrypoint so feel free to split your code using modules
 5. Install dependencies `npm install`
 6. Build the app like normal, `pebble build` will compile your TypeScript and your Pebble app

@@ -39,6 +39,8 @@ interface PebbleEvents {
 
 declare global {
   var Pebble: PebbleKitJS;
+
+  var PebbleTS: typeof import("./index").default;
 }
 
 export {};
