@@ -18,7 +18,7 @@ This project adds a JS build step similar to what you would find in a modern web
 - `ready` and `appmessage` events
 - `sendAppMessage`
 - `getTimelineToken`
-- `showSimpleNotficationOnMebble`
+- `showSimpleNotficationOnPebble`
 
 # Tested JS/TS features
 
