@@ -51,6 +51,21 @@ interface PebbleKitJS {
    * The Pebble mobile app will launch the supplied URL to allow the user to configure the watchapp or watchface.
    */
   openURL(url: string): void;
+
+  /**
+   * Obtain an object containing information on the currently connected Pebble smartwatch.
+   */
+  getActiveWatchInfo(): WatchInfo;
+
+  /**
+   * Returns a unique account token that is associated with the Pebble account of the current user.
+   */
+  getAccountToken(): string;
+
+  /**
+   * Returns a a unique token that can be used to identify a Pebble device.
+   */
+  getWatchToken(): string;
 }
 
 /**
@@ -85,6 +100,18 @@ interface PebbleEvents {
   ready: ReadyEvent;
   appmessage: AppMessageEvent;
   showConfiguration: ShowConfigurationEvent;
+}
+
+interface WatchInfo {
+  platform: "aplite" | "basalt" | "chalk" | "diorite" | "emery";
+  model: string; // TODO: maybe we can make this a type union? would need to find all the models
+  language: string;
+  firmware: {
+    major: number;
+    minor: number;
+    patch: number;
+    suffix: string;
+  };
 }
 
 declare global {
