@@ -1,0 +1,6 @@
+{
+  "name": "PebbleKit TS",
+  "entryPoints": ["src/tslib/index.ts"],
+  "excludeInternal": true,
+  "excludePrivate": true
+}
