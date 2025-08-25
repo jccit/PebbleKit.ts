@@ -1,0 +1,32 @@
+{
+  "name": "pebblekit-ts-example",
+  "author": "MakeAwesomeHappen",
+  "version": "1.0.0",
+  "keywords": [
+    "pebble-app"
+  ],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "pebblekit-ts-example",
+    "uuid": "31e52c0a-4745-492b-8b86-9e5b6353e2a0",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "messageKeys": [
+      "text"
+    ],
+    "resources": {
+      "media": []
+    }
+  }
+}

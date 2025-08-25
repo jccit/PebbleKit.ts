@@ -1,4 +1,4 @@
-name: Build Pebble app
+name: Build example Pebble app
 
 on:
   push:

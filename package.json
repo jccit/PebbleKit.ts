@@ -1,13 +1,12 @@
 {
-  "name": "pebble-ts",
-  "author": "MakeAwesomeHappen",
+  "name": "pebblekit-ts",
+  "author": "jccit",
   "version": "1.0.0",
-  "keywords": [
-    "pebble-app"
-  ],
-  "private": true,
   "scripts": {
     "build": "rollup -c"
+  },
+  "bin": {
+    "pebblekit-ts": "bin/pebblekit-ts.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.2",
@@ -31,26 +30,5 @@
     "rollup": "^4.46.2",
     "tslib": "^2.8.1",
     "typescript": "^5.9.2"
-  },
-  "pebble": {
-    "displayName": "pebble-ts",
-    "uuid": "7126364c-aed3-41aa-b52b-8e4b3398090a",
-    "sdkVersion": "3",
-    "enableMultiJS": true,
-    "targetPlatforms": [
-      "aplite",
-      "basalt",
-      "chalk",
-      "diorite"
-    ],
-    "watchapp": {
-      "watchface": false
-    },
-    "messageKeys": [
-      "text"
-    ],
-    "resources": {
-      "media": []
-    }
   }
 }

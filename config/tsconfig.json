@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "include": ["src/ts/**/*", "src/tslib/**/*"],
-  "files": ["src/tslib/index.ts"]
+  "include": ["src/ts/**/*", "../lib/**/*"],
+  "files": ["../lib/index.ts", "../lib/pebble.d.ts"]
 }
