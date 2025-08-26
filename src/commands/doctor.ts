@@ -50,10 +50,10 @@ export const checks: DoctorCheck[] = [
         packageJsonContent.devDependencies?.[pkg.name];
 
       if (!hasPebbkitDependency) {
-        if (!packageJsonContent.dependencies) {
-          packageJsonContent.dependencies = {};
+        if (!packageJsonContent.devDependencies) {
+          packageJsonContent.devDependencies = {};
         }
-        packageJsonContent.dependencies[pkg.name] = `^${pkg.version}`;
+        packageJsonContent.devDependencies[pkg.name] = `^${pkg.version}`;
         console.log(
           helpers.format(
             `Make sure to run "npm i" before building your project!!`,
