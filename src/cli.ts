@@ -10,12 +10,20 @@ const program = termost({
 });
 
 program
-  .command<{ _internalNoop: void }>({
+  .command<{ fix: boolean }>({
     name: "doctor",
     description: "Checks your Pebble project for issues with your PKTS setup",
   })
+  .option({
+    key: "fix",
+    name: "fix",
+    description: "Fixes any issues found if possible",
+    defaultValue: false,
+  })
   .task({
-    handler: doctor,
+    async handler(args) {
+      await doctor(args.fix);
+    },
   });
 
 program

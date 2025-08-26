@@ -1,19 +1,157 @@
 import path from "path";
 import fs from "fs";
 import { helpers } from "termost";
-import { projectDir } from "../util";
+import pkg from "../../package.json" with { type: "json" };
+import { pktsDir, projectDir } from "../util";
 
 interface DoctorCheck {
   name: string;
   check: () => Promise<true | string>;
+  fix?: () => Promise<void>;
 }
 
 const checks: DoctorCheck[] = [
   {
+    name: "package.json",
+    check: async () => {
+      const packageJson = path.join(projectDir, "package.json");
+
+      if (!fs.existsSync(packageJson)) {
+        return "package.json not found";
+      }
+
+      const packageJsonContent = JSON.parse(
+        fs.readFileSync(packageJson, "utf-8")
+      );
+
+      const hasPebbkitDependency =
+        packageJsonContent.dependencies?.["pebblekit-ts"] ||
+        packageJsonContent.devDependencies?.["pebblekit-ts"];
+
+      if (!hasPebbkitDependency) {
+        return "pebblekit-ts is not listed as a dependency";
+      }
+
+      const buildScript = packageJsonContent.scripts?.build;
+      if (buildScript !== "pkts build") {
+        return "build script should be 'pkts build'";
+      }
+
+      return true;
+    },
+    fix: async () => {
+      const packageJson = path.join(projectDir, "package.json");
+      const packageJsonContent = JSON.parse(
+        fs.readFileSync(packageJson, "utf-8")
+      );
+
+      const hasPebbkitDependency =
+        packageJsonContent.dependencies?.["pebblekit-ts"] ||
+        packageJsonContent.devDependencies?.["pebblekit-ts"];
+
+      if (!hasPebbkitDependency) {
+        if (!packageJsonContent.dependencies) {
+          packageJsonContent.dependencies = {};
+        }
+        packageJsonContent.dependencies["pebblekit-ts"] = `^${pkg.version}`;
+        console.log(
+          helpers.format(
+            `Make sure to run "npm i" before building your project!!`,
+            { color: "yellow", modifiers: ["bold"] }
+          )
+        );
+      }
+
+      if (!packageJsonContent.scripts) {
+        packageJsonContent.scripts = {};
+      }
+      packageJsonContent.scripts.build = "pkts build";
+
+      fs.writeFileSync(packageJson, JSON.stringify(packageJsonContent, null, 2));
+    },
+  },
+  {
+    name: "wscript",
+    check: async () => {
+      const wscript = path.join(projectDir, "wscript");
+      const templateWscript = path.join(pktsDir, "config/wscript");
+
+      if (!fs.existsSync(wscript)) {
+        return "wscript not found";
+      }
+
+      const userWscript = fs.readFileSync(wscript, "utf-8");
+      const templateWscriptContent = fs.readFileSync(templateWscript, "utf-8");
+
+      if (userWscript !== templateWscriptContent) {
+        return "wscript does not match";
+      }
+
+      return true;
+    },
+    fix: async () => {
+      const wscript = path.join(projectDir, "wscript");
+      const templateWscript = path.join(pktsDir, "config/wscript");
+
+      const templateContent = fs.readFileSync(templateWscript, "utf-8");
+      fs.writeFileSync(wscript, templateContent);
+    },
+  },
+  {
     name: "tsconfig.json",
     check: async () => {
       const tsConfig = path.join(projectDir, "tsconfig.json");
-      return fs.existsSync(tsConfig) ? true : "tsconfig.json not found";
+      const templateConfig = path.join(
+        pktsDir,
+        "config/tsconfig.template.json"
+      );
+
+      if (!fs.existsSync(tsConfig)) {
+        return "tsconfig.json not found";
+      }
+
+      // Skip check if we don't have a config to compare against
+      if (!fs.existsSync(templateConfig)) {
+        return true;
+      }
+
+      try {
+        const userConfig = JSON.parse(fs.readFileSync(tsConfig, "utf-8"));
+        const template = JSON.parse(fs.readFileSync(templateConfig, "utf-8"));
+
+        // Check if user config extends the correct template
+        if (userConfig.extends !== template.extends) {
+          return `tsconfig.json should extend "${template.extends}"`;
+        }
+
+        // Check if include array matches template
+        const userInclude = JSON.stringify(userConfig.include?.sort());
+        const templateInclude = JSON.stringify(template.include?.sort());
+
+        if (userInclude !== templateInclude) {
+          return `tsconfig.json include should be ${JSON.stringify(
+            template.include
+          )}`;
+        }
+
+        return true;
+      } catch (error) {
+        return "tsconfig.json is not valid JSON";
+      }
+    },
+    fix: async () => {
+      const tsConfig = path.join(projectDir, "tsconfig.json");
+      const templateConfig = path.join(
+        pktsDir,
+        "config/tsconfig.template.json"
+      );
+
+      if (!fs.existsSync(templateConfig)) {
+        throw new Error("Template config not found");
+      }
+
+      const templateContent = fs.readFileSync(templateConfig, "utf-8");
+      fs.writeFileSync(tsConfig, templateContent);
     },
   },
   {
@@ -22,6 +160,10 @@ const checks: DoctorCheck[] = [
       const srcTs = path.join(projectDir, "src/ts");
       return fs.existsSync(srcTs) ? true : "src/ts not found";
     },
+    fix: async () => {
+      const srcTs = path.join(projectDir, "src/ts");
+      fs.mkdirSync(srcTs, { recursive: true });
+    },
   },
   {
     name: "src/ts/index.ts",
@@ -29,12 +171,33 @@ const checks: DoctorCheck[] = [
       const srcTsIndex = path.join(projectDir, "src/ts/index.ts");
       return fs.existsSync(srcTsIndex) ? true : "src/ts/index.ts not found";
     },
+    fix: async () => {
+      const srcTsIndex = path.join(projectDir, "src/ts/index.ts");
+      fs.writeFileSync(
+        srcTsIndex,
+        `Pebble.addEventListener("ready", async (e) => console.log("Hello from TS!"))`
+      );
+    },
   },
 ];
 
-export const doctor = async () => {
+export const doctor = async (fix: boolean) => {
   console.log(helpers.format("PebbleKit.ts Doctor", { modifiers: ["bold"] }));
   console.log("Checking for any issues\n");
+
+  if (fix) {
+    const preCheck = await Promise.all(checks.map((check) => check.check()));
+
+    if (preCheck.some((result) => result !== true)) {
+      console.log("Auto fixing issues...\n");
+    }
+
+    for (const [index, check] of checks.entries()) {
+      if (preCheck[index] !== true) {
+        await check?.fix();
+      }
+    }
+  }
 
   const results = await Promise.all(checks.map((check) => check.check()));
 
@@ -52,6 +215,23 @@ export const doctor = async () => {
           modifiers: passed ? [] : ["bold"],
         }
       )
+    );
+  }
+
+  const failedChecks = results.filter((result) => result !== true);
+  if (failedChecks.length > 0) {
+    console.log(
+      helpers.format(
+        `\nFound ${failedChecks.length} issue${
+          failedChecks.length === 1 ? "" : "s"
+        }`,
+        { color: "red", modifiers: ["bold"] }
+      )
+    );
+    console.log(
+      helpers.format("Please run `pkts doctor --fix` to fix them", {
+        color: "yellow",
+      })
     );
   }
 };
