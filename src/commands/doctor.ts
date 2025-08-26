@@ -1,8 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { helpers } from "termost";
-
-const rootDir = process.cwd();
+import { projectDir } from "../util";
 
 interface DoctorCheck {
   name: string;
@@ -13,21 +12,21 @@ const checks: DoctorCheck[] = [
   {
     name: "tsconfig.json",
     check: async () => {
-      const tsConfig = path.join(rootDir, "tsconfig.json");
+      const tsConfig = path.join(projectDir, "tsconfig.json");
       return fs.existsSync(tsConfig) ? true : "tsconfig.json not found";
     },
   },
   {
     name: "src/ts",
     check: async () => {
-      const srcTs = path.join(rootDir, "src/ts");
+      const srcTs = path.join(projectDir, "src/ts");
       return fs.existsSync(srcTs) ? true : "src/ts not found";
     },
   },
   {
     name: "src/ts/index.ts",
     check: async () => {
-      const srcTsIndex = path.join(rootDir, "src/ts/index.ts");
+      const srcTsIndex = path.join(projectDir, "src/ts/index.ts");
       return fs.existsSync(srcTsIndex) ? true : "src/ts/index.ts not found";
     },
   },

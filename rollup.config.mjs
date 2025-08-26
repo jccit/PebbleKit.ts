@@ -8,5 +8,16 @@ export default {
     banner: "#!/usr/bin/env node",
   },
   plugins: [typescript(), json()],
-  external: ["termost", "path", "fs"],
+  external: [
+    "termost",
+    "path",
+    "fs",
+    "@rollup/plugin-typescript",
+    "@rollup/plugin-node-resolve",
+    "@rollup/plugin-babel",
+    "@rollup/plugin-commonjs",
+    "@rollup/plugin-terser",
+    "@rollup/plugin-inject",
+    "rollup",
+  ],
 };
