@@ -1,10 +1,14 @@
 {
   "name": "pkts",
+  "description": "Typescript tools for Pebble",
   "author": "jccit",
-  "version": "0.2.0",
+  "version": "0.2.0-beta.1",
   "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/jccit/PebbleKit.ts",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "prepare": "npm run build"
   },
   "bin": {
     "pkts": "bin/pkts.js"
