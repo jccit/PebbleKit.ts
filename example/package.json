@@ -6,7 +6,12 @@
     "pebble-app"
   ],
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "pkts": "^0.2.0"
+  },
+  "scripts": {
+    "build": "pkts build"
+  },
   "pebble": {
     "displayName": "pebblekit-ts-example",
     "uuid": "31e52c0a-4745-492b-8b86-9e5b6353e2a0",
