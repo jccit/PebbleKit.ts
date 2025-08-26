@@ -3,3 +3,4 @@ example/src/pkjs/
 node_modules/
 .DS_Store
 .lock*
+bin/
