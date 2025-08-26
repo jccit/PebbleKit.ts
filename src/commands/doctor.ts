@@ -25,11 +25,11 @@ export const checks: DoctorCheck[] = [
       );
 
       const hasPebbkitDependency =
-        packageJsonContent.dependencies?.["pebblekit-ts"] ||
-        packageJsonContent.devDependencies?.["pebblekit-ts"];
+        packageJsonContent.dependencies?.[pkg.name] ||
+        packageJsonContent.devDependencies?.[pkg.name];
 
       if (!hasPebbkitDependency) {
-        return "pebblekit-ts is not listed as a dependency";
+        return `${pkg.name} is not listed as a dependency`;
       }
 
       const buildScript = packageJsonContent.scripts?.build;
@@ -46,14 +46,14 @@ export const checks: DoctorCheck[] = [
       );
 
       const hasPebbkitDependency =
-        packageJsonContent.dependencies?.["pebblekit-ts"] ||
-        packageJsonContent.devDependencies?.["pebblekit-ts"];
+        packageJsonContent.dependencies?.[pkg.name] ||
+        packageJsonContent.devDependencies?.[pkg.name];
 
       if (!hasPebbkitDependency) {
         if (!packageJsonContent.dependencies) {
           packageJsonContent.dependencies = {};
         }
-        packageJsonContent.dependencies["pebblekit-ts"] = `^${pkg.version}`;
+        packageJsonContent.dependencies[pkg.name] = `^${pkg.version}`;
         console.log(
           helpers.format(
             `Make sure to run "npm i" before building your project!!`,

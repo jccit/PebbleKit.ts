@@ -1,4 +1,4 @@
 {
-  "extends": "pebblekit-ts/config/tsconfig.json",
-  "include": ["src/ts/**/*", "node_modules/pebblekit-ts/lib/**/*"]
+  "extends": "pkts/config/tsconfig.json",
+  "include": ["src/ts/**/*", "node_modules/pkts/lib/**/*"]
 }

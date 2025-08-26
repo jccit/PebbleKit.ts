@@ -12,6 +12,7 @@ export default {
     "termost",
     "path",
     "fs",
+    "url",
     "@rollup/plugin-typescript",
     "@rollup/plugin-node-resolve",
     "@rollup/plugin-babel",
