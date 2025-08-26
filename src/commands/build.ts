@@ -25,7 +25,9 @@ export const build = async () => {
       ...rollupConfig.plugins,
     ],
     onwarn: (warning) => {
-      console.log(helpers.format("WARNING", { color: "yellow" }));
+      console.log(
+        helpers.format("WARNING", { color: "yellow", modifiers: ["bold"] })
+      );
       console.log(warning.frame + warning.message);
     },
   };
@@ -33,7 +35,7 @@ export const build = async () => {
   console.log(
     helpers.format(
       `Compiling ${rollupConfig.input} -> ${rollupConfig.output.file}`,
-      { color: "green" }
+      { color: "green", modifiers: ["bold"] }
     )
   );
 
