@@ -24,6 +24,10 @@ export const build = async () => {
       }),
       ...rollupConfig.plugins,
     ],
+    onwarn: (warning) => {
+      console.log(helpers.format("WARNING", { color: "yellow" }));
+      console.log(warning.frame + warning.message);
+    },
   };
 
   console.log(
