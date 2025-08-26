@@ -10,7 +10,7 @@ interface DoctorCheck {
   fix?: () => Promise<void>;
 }
 
-const checks: DoctorCheck[] = [
+export const checks: DoctorCheck[] = [
   {
     name: "package.json",
     check: async () => {
@@ -181,12 +181,17 @@ const checks: DoctorCheck[] = [
   },
 ];
 
+export const runAllChecks = async () => {
+  const results = await Promise.all(checks.map((check) => check.check()));
+  return results;
+};
+
 export const doctor = async (fix: boolean) => {
-  console.log(helpers.format("PebbleKit.ts Doctor", { modifiers: ["bold"] }));
+  console.log(helpers.format("PebbleKit.ts Doctor", { modifiers: ["bold", "underline"] }));
   console.log("Checking for any issues\n");
 
   if (fix) {
-    const preCheck = await Promise.all(checks.map((check) => check.check()));
+    const preCheck = await runAllChecks();
 
     if (preCheck.some((result) => result !== true)) {
       console.log("Auto fixing issues...\n");
@@ -199,7 +204,7 @@ export const doctor = async (fix: boolean) => {
     }
   }
 
-  const results = await Promise.all(checks.map((check) => check.check()));
+  const results = await runAllChecks();
 
   for (const [index, check] of checks.entries()) {
     const result = results[index];
