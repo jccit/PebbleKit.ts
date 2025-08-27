@@ -2,7 +2,7 @@
   "name": "pkts",
   "description": "Typescript tools for Pebble",
   "author": "jccit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/jccit/PebbleKit.ts",
