@@ -14,6 +14,13 @@ Also provided are modern wrappers around PKJS functions, available under the Peb
 2. Install dependencies `npm install`
 3. Build your app like normal, `pebble build` will compile your TypeScript and your Pebble app
 
+## CLI commands
+
+- `pkts init` - Configures your Pebble project to use PKTS
+- `pkts doctor` - Checks for configuration issues preventing PKTS from working correctly
+- `pkts doctor --fix` - Automatically fixes any found issues
+- `pkts build` - Compiles TS -> JS, ready for Pebble SDK to bundle into your app
+
 ## Available types
 
 - `ready` and `appmessage` events
