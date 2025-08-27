@@ -19,6 +19,7 @@ export default {
     "@rollup/plugin-commonjs",
     "@rollup/plugin-terser",
     "@rollup/plugin-inject",
+    "@rollup/plugin-json",
     "rollup",
   ],
 };
