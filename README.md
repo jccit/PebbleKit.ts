@@ -38,6 +38,6 @@ Also provided are modern wrappers around PKJS functions, available under the Peb
 
 ## Contributing
 
-The [PKJS type definitions](https://github.com/jccit/PebbleKit.ts/blob/main/src/ts/pebble.d.ts) are incomplete are incomplete as I have only typed what is used in PebbleRail.
+The [PKJS type definitions](https://github.com/jccit/PebbleKit.ts/blob/main/src/ts/pebble.d.ts) are incomplete as I have only typed what is used in PebbleRail.
 
 If you are using this in your own project and find yourself expanding the definitions, please contribute your changes back to this project so the community can benefit!
