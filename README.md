@@ -2,8 +2,6 @@
 
 A modern Pebble app boilerplate using TypeScript.
 
-When building [PebbleRail](https://github.com/jccit/pebblerail), I wanted to be able to use modern web tooling to write my PebbleKit JS app. That app performs a lot of data fetching and communication with the watch. However, the engine used in the Pebble app (and Core Devices app) targets something close to ES5.
-
 This project adds a JS build step similar to what you would find in a modern web project, but with a focus on targeting the PebbleKit JS engine. Meaning you can use modern JS/TS features without worrying about compatability.
 
 Also provided are modern wrappers around PKJS functions, available under the PebbleTS namespace.
@@ -36,8 +34,14 @@ Also provided are modern wrappers around PKJS functions, available under the Peb
 - Arrow functions
 - Array/object spreading
 
+## Showcase
+
+- [PebbleRail](https://apps.rebble.io/en_US/application/67a8c311b5e348000915b07b)
+- [Tube Status](https://apps.rebble.io/en_US/application/529e8742d7894b189c000012) by Chris Lewis
+- [Plurble](https://apps.rebble.io/en_US/application/67cbd46ed2acb301fae26e30) by Nikki
+
 ## Contributing
 
-The [PKJS type definitions](https://github.com/jccit/PebbleKit.ts/blob/main/src/ts/pebble.d.ts) are incomplete as I have only typed what is used in PebbleRail.
+The [PKJS type definitions](https://github.com/jccit/PebbleKit.ts/blob/main/src/ts/pebble.d.ts) only cover a subset of the APIs available in PebbleKit JS.
 
 If you are using this in your own project and find yourself expanding the definitions, please contribute your changes back to this project so the community can benefit!
