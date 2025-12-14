@@ -14,7 +14,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "check-types": "tsc -p config/tsconfig.json --noEmit"
   },
   "bin": {
     "pkts": "bin/pkts.js"

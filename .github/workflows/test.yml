@@ -1,4 +1,4 @@
-name: Build pkts package
+name: Test
 
 on:
   push:
@@ -24,5 +24,8 @@ jobs:
           restore-keys: |
             node-${{ runner.os }}-
 
-      - name: Build JS
+      - name: Type check
+        run: npm run check-types
+
+      - name: Build CLI
         run: npm run build
