@@ -21,6 +21,7 @@ export const build = async () => {
     plugins: [
       inject({
         PebbleTS: path.join(pktsDir, "lib/index.ts"),
+        fetch: ["whatwg-fetch", "fetch"],
       }),
       ...rollupConfig.plugins,
     ],
