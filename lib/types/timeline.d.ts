@@ -3,7 +3,7 @@ export {};
 declare global {
   interface TimelinePin {
     id: string;
-    time: string;
+    time: Date;
     duration?: number;
     createNotification?: TimelineNotification;
     updateNotification?: TimelineNotification;
@@ -94,7 +94,7 @@ declare global {
     | GenericNotificationLayout;
 
   interface TimelineReminder {
-    time: string;
+    time: Date;
     layout: TimelineLayout;
   }
 
