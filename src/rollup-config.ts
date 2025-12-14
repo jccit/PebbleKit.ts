@@ -16,7 +16,9 @@ export default {
   },
   plugins: [
     typescript(),
-    nodeResolve(),
+    nodeResolve({
+      extensions: [".ts", ".js"],
+    }),
     commonjs(),
     json(),
     babel({
