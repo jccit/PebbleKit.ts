@@ -24,7 +24,7 @@ Also provided are modern wrappers around PKJS functions, available under the Peb
 - `ready` and `appmessage` events
 - `sendAppMessage`
 - `getTimelineToken`
-- `showSimpleNotficationOnPebble`
+- `showSimpleNotificationOnPebble`
 
 # Tested JS/TS features
 
