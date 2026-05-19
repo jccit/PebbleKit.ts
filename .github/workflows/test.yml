@@ -35,7 +35,8 @@ jobs:
             libglib2.0-0 \
             libpixman-1-0 \
             zlib1g \
-            libsndio7.0
+            libsndio7.0 \
+            qemu-system-data
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v5
@@ -51,6 +52,16 @@ jobs:
 
       - name: Install Pebble SDK
         run: pebble sdk install latest
+
+      - name: Link QEMU keymaps for headless emulator
+        run: |
+          PC_BIOS="${HOME}/.pebble-sdk/SDKs/current/toolchain/lib/pc-bios"
+          if [ ! -d "${PC_BIOS}" ]; then
+            echo "Expected pc-bios at ${PC_BIOS}"
+            ls -la "${HOME}/.pebble-sdk/SDKs/current/toolchain/lib/" || true
+            exit 1
+          fi
+          ln -sfn /usr/share/qemu/keymaps "${PC_BIOS}/keymaps"
 
       - name: Install Node dependencies
         run: npm install
