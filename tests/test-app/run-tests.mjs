@@ -2,6 +2,7 @@
 import { spawn } from "node:child_process";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { startTestServer } from "./test-server.mjs";
 
 const PLATFORM = "emery";
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -25,6 +26,9 @@ function run(cmd, args, opts = {}) {
 }
 
 async function main() {
+  console.log(`${BOLD}==> Starting local test server${RESET}`);
+  const testServer = await startTestServer();
+
   console.log(`${BOLD}==> Kill and wipe emulator${RESET}`);
   await run("pebble", ["kill"]);
   await run("pebble", ["wipe"]);
@@ -60,6 +64,9 @@ async function main() {
     clearTimeout(overallTimeout);
     try {
       logs.kill("SIGTERM");
+    } catch {}
+    try {
+      testServer.close();
     } catch {}
     // Backstop: if `pebble kill` hangs or errors, exit anyway after 5s.
     const backstop = setTimeout(() => {
