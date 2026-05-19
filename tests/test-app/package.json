@@ -1,0 +1,41 @@
+{
+  "name": "test-app",
+  "author": "MakeAwesomeHappen",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "pkts": "file:../.."
+  },
+  "scripts": {
+    "build": "pkts build",
+    "test": "node run-tests.mjs"
+  },
+  "pebble": {
+    "displayName": "PKTS Test",
+    "uuid": "0eb49fc7-d058-474d-b0af-9d15e299704d",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery",
+      "flint",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "messageKeys": [
+      "run_test",
+      "result",
+      "status"
+    ],
+    "resources": {
+      "media": []
+    }
+  }
+}
