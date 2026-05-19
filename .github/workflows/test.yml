@@ -51,16 +51,12 @@ jobs:
         run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Install Pebble SDK
-        run: pebble sdk install latest
-
-      - name: Link QEMU keymaps for headless emulator
         run: |
+          pebble sdk install latest
+          SDK_VERSION="$(ls -1 "${HOME}/.pebble-sdk/SDKs" | grep -E '^[0-9]' | sort -V | tail -1)"
+          pebble sdk activate "${SDK_VERSION}"
           PC_BIOS="${HOME}/.pebble-sdk/SDKs/current/toolchain/lib/pc-bios"
-          if [ ! -d "${PC_BIOS}" ]; then
-            echo "Expected pc-bios at ${PC_BIOS}"
-            ls -la "${HOME}/.pebble-sdk/SDKs/current/toolchain/lib/" || true
-            exit 1
-          fi
+          mkdir -p "${PC_BIOS}"
           ln -sfn /usr/share/qemu/keymaps "${PC_BIOS}/keymaps"
 
       - name: Install Node dependencies
