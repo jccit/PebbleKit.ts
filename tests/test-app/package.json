@@ -9,7 +9,8 @@
     "pkts": "file:../.."
   },
   "scripts": {
-    "build": "pkts build"
+    "build": "pkts build",
+    "test": "node run-tests.mjs"
   },
   "pebble": {
     "displayName": "PKTS Test",

@@ -21,7 +21,7 @@ static void start_next_test(void) {
   if (s_current_row >= s_row_count) {
     int finished = s_current_row - 1;
     s_current_row = -1;
-    APP_LOG(APP_LOG_LEVEL_INFO, "Report complete");
+    APP_LOG(APP_LOG_LEVEL_INFO, "[REPORT_DONE]");
     if (s_observer) s_observer(finished, true);
     return;
   }
