@@ -7,6 +7,11 @@ import { startTestServer } from "./test-server.mjs";
 const PLATFORM = "emery";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OVERALL_TIMEOUT_MS = 5 * 60 * 1000;
+const USE_VNC = process.env.CI === "true" || process.env.CI === "1";
+
+function pebbleArgs(...args) {
+  return USE_VNC ? [...args, "--vnc"] : args;
+}
 
 const RED = "\x1b[31m";
 const GREEN = "\x1b[32m";
@@ -37,10 +42,10 @@ async function main() {
   await run("pebble", ["build"]);
 
   console.log(`${BOLD}==> Installing on ${PLATFORM}${RESET}`);
-  await run("pebble", ["install", "--emulator", PLATFORM]);
+  await run("pebble", pebbleArgs("install", "--emulator", PLATFORM));
 
   console.log(`${BOLD}==> Tailing logs${RESET}`);
-  const logs = spawn("pebble", ["logs", "--emulator", PLATFORM], {
+  const logs = spawn("pebble", pebbleArgs("logs", "--emulator", PLATFORM), {
     cwd: HERE,
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -177,18 +182,17 @@ async function main() {
   // Give pkjs a moment to settle, then trigger TEST ALL (SELECT on row 0).
   await new Promise((r) => setTimeout(r, 2000));
   console.log(`${BOLD}==> pressing SELECT to start TEST ALL${RESET}`);
-  await run("pebble", [
-    "emu-button",
-    "--emulator",
-    PLATFORM,
-    "click",
-    "select",
-  ]);
+  await run(
+    "pebble",
+    pebbleArgs("emu-button", "--emulator", PLATFORM, "click", "select"),
+  );
 }
 
 main().catch((err) => {
   console.error(`${RED}${err.stack || err.message || err}${RESET}`);
-  spawn("pebble", ["kill"], { stdio: "ignore" }).on("exit", () =>
-    process.exit(2),
-  );
+  const exit = () => process.exit(2);
+  setTimeout(exit, 5000).unref();
+  spawn("pebble", ["kill"], { stdio: "ignore" })
+    .on("exit", exit)
+    .on("error", exit);
 });

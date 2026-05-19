@@ -7,14 +7,17 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Node dependencies
-        run: npm install
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
 
       - name: Cache Node dependencies
         uses: actions/cache@v4
@@ -24,8 +27,44 @@ jobs:
           restore-keys: |
             node-${{ runner.os }}-
 
+      - name: Install Pebble SDK system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libsdl2-2.0-0 \
+            libglib2.0-0 \
+            libpixman-1-0 \
+            zlib1g \
+            libsndio7.0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.13"
+          enable-cache: true
+
+      - name: Install Pebble CLI
+        run: uv tool install pebble-tool --python 3.13
+
+      - name: Add Pebble CLI to PATH
+        run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install Pebble SDK
+        run: pebble sdk install latest
+
+      - name: Install Node dependencies
+        run: npm install
+
       - name: Type check
         run: npm run check-types
 
       - name: Build CLI
         run: npm run build
+
+      - name: Install test-app dependencies
+        working-directory: tests/test-app
+        run: npm install
+
+      - name: Run end-to-end tests
+        working-directory: tests/test-app
+        run: npm run test
