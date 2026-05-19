@@ -11,7 +11,7 @@ static MenuLayer *s_menu;
 static Test s_flat_tests[MAX_TOTAL_TESTS];
 
 static uint16_t get_num_rows(MenuLayer *ml, uint16_t section, void *ctx) {
-  return 1 + NUM_CATEGORIES;
+  return 2 + NUM_CATEGORIES;
 }
 
 static int16_t get_cell_height(MenuLayer *ml, MenuIndex *idx, void *ctx) {
@@ -21,19 +21,24 @@ static int16_t get_cell_height(MenuLayer *ml, MenuIndex *idx, void *ctx) {
 static void draw_row(GContext *g, const Layer *cell, MenuIndex *idx,
                      void *ctx) {
   if (idx->row == 0) {
+    menu_cell_basic_draw(g, cell, "CI TESTS", NULL, NULL);
+  } else if (idx->row == 1) {
     menu_cell_basic_draw(g, cell, "TEST ALL", NULL, NULL);
   } else {
-    int cat_idx = idx->row - 1;
+    int cat_idx = idx->row - 2;
     menu_cell_basic_draw(g, cell, s_categories[cat_idx]->name, NULL, NULL);
   }
 }
 
 static void select_row(MenuLayer *ml, MenuIndex *idx, void *ctx) {
   if (idx->row == 0) {
+    int count = tests_flatten_ci(s_flat_tests, MAX_TOTAL_TESTS);
+    report_show("CI tests", s_flat_tests, count);
+  } else if (idx->row == 1) {
     int count = tests_flatten_all(s_flat_tests, MAX_TOTAL_TESTS);
     report_show("All tests", s_flat_tests, count);
   } else {
-    category_menu_push(s_categories[idx->row - 1]);
+    category_menu_push(s_categories[idx->row - 2]);
   }
 }
 

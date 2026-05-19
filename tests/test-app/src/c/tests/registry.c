@@ -22,3 +22,15 @@ int tests_flatten_all(Test *out, int max) {
   }
   return idx;
 }
+
+int tests_flatten_ci(Test *out, int max) {
+  int idx = 0;
+  for (int c = 0; c < NUM_CATEGORIES; c++) {
+    const Category *cat = s_categories[c];
+    if (cat == &category_timeline) continue;
+    for (int t = 0; t < cat->test_count && idx < max; t++) {
+      out[idx++] = cat->tests[t];
+    }
+  }
+  return idx;
+}

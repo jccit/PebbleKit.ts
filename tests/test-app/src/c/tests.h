@@ -17,3 +17,6 @@ extern const int NUM_CATEGORIES;
 // Fills `out` with every test across every category, in registration order.
 // Returns the number of tests written (capped at `max`).
 int tests_flatten_all(Test *out, int max);
+
+// Like tests_flatten_all but excludes the timeline category.
+int tests_flatten_ci(Test *out, int max);
